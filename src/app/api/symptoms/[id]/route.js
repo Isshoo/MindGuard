@@ -37,6 +37,11 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     const { id } = await params;
+
+    await prisma.diagnosis.deleteMany();
+    await prisma.consultationSymptom.deleteMany();
+    await prisma.consultation.deleteMany();
+
     await prisma.symptom.delete({
       where: { id: id },
     });

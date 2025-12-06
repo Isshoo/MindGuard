@@ -34,6 +34,10 @@ export async function POST(request) {
       }
     }
 
+    await prisma.diagnosis.deleteMany();
+    await prisma.consultationSymptom.deleteMany();
+    await prisma.consultation.deleteMany();
+
     const disease = await prisma.disease.create({
       data: { code, name, description },
     });

@@ -6,6 +6,10 @@ export async function PUT(request, { params }) {
     const { id } = await params;
     const { probability } = await request.json();
 
+    await prisma.diagnosis.deleteMany();
+    await prisma.consultationSymptom.deleteMany();
+    await prisma.consultation.deleteMany();
+
     const rule = await prisma.rule.update({
       where: { id: id },
       data: { probability: parseFloat(probability) },
@@ -25,6 +29,11 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     const { id } = await params;
+
+    await prisma.diagnosis.deleteMany();
+    await prisma.consultationSymptom.deleteMany();
+    await prisma.consultation.deleteMany();
+
     await prisma.rule.delete({
       where: { id: id },
     });

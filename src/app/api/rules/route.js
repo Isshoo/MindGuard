@@ -33,6 +33,10 @@ export async function POST(request) {
       return NextResponse.json({ error: "Aturan sudah ada" }, { status: 400 });
     }
 
+    await prisma.diagnosis.deleteMany();
+    await prisma.consultationSymptom.deleteMany();
+    await prisma.consultation.deleteMany();
+
     const rule = await prisma.rule.create({
       data: {
         diseaseId,
