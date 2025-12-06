@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("user") // "user" or "admin"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  consultations Consultation[]
+}
+
+model Disease {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  rules         Rule[]
+  diagnoses     Diagnosis[]
+}
+
+model Symptom {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  rules              Rule[]
+  consultationSymptoms ConsultationSymptom[]
+}
+
+model Rule {
+  id          String   @id @default(cuid())
+  diseaseId   String
+  symptomId   String
+  probability Float    // P(Symptom|Disease) - nilai 0.0 sampai 1.0
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  disease Disease @relation(fields: [diseaseId], references: [id], onDelete: Cascade)
+  symptom Symptom @relation(fields: [symptomId], references: [id], onDelete: Cascade)
+  
+  @@unique([diseaseId, symptomId])
+}
+
+model Consultation {
+  id          String   @id @default(cuid())
+  userId      String?
+  patientName String
+  patientAge  Int
+  patientGender String
+  createdAt   DateTime @default(now())
+  
+  user      User?     @relation(fields: [userId], references: [id])
+  symptoms  ConsultationSymptom[]
+  diagnoses Diagnosis[]
+}
+
+model ConsultationSymptom {
+  id             String   @id @default(cuid())
+  consultationId String
+  symptomId      String
+  
+  consultation Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+  symptom      Symptom      @relation(fields: [symptomId], references: [id])
+  
+  @@unique([consultationId, symptomId])
+}
+
+model Diagnosis {
+  id             String   @id @default(cuid())
+  consultationId String
+  diseaseId      String
+  probability    Float
+  createdAt      DateTime @default(now())
+  
+  consultation Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+  disease      Disease      @relation(fields: [diseaseId], references: [id])
+}
