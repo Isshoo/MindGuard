@@ -139,8 +139,8 @@ export default function RulesPage() {
     return acc;
   }, {});
 
-  // Generate Forward Chaining String: "IF G01 AND G02 ... THEN P01"
-  const generateForwardChainingText = (rulesList, diseaseName) => {
+  // Generate Base Rule String: "IF G01 AND G02 ... THEN P01"
+  const generateBaseRuleText = (rulesList, diseaseName) => {
     if (!rulesList || rulesList.length === 0) return "Tidak ada aturan.";
     const conditions = rulesList.map((r) => r.symptom.code).join(" AND ");
     return `IF (${conditions}) THEN ${diseaseName}`;
@@ -318,13 +318,13 @@ export default function RulesPage() {
                         </div>
                       </div>
 
-                      {/* Logika Forward Chaining yang diminta */}
+                      {/* Logika Rule Base yang diminta */}
                       <div className="bg-white p-4 rounded-lg border border-indigo-100 shadow-sm">
                         <p className="text-sm font-mono text-gray-700 wrap-break-words leading-relaxed">
                           <span className="font-bold text-indigo-600 block mb-1 text-xs uppercase tracking-wide">
-                            Logika Forward Chaining:
+                            Base Rule:
                           </span>
-                          {generateForwardChainingText(data.items, data.diseaseName)}
+                          {generateBaseRuleText(data.items, data.diseaseName)}
                         </p>
                       </div>
                     </div>

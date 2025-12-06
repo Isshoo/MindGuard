@@ -10,7 +10,7 @@ export async function GET() {
       },
       orderBy: {
         disease: {
-          name: "asc",
+          code: "asc",
         },
       },
     });

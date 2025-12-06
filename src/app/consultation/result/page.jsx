@@ -136,20 +136,22 @@ export default function ResultPage() {
         </div>
 
         {/* Main Result */}
-        <div className="bg-linear-to-r from-indigo-500 to-purple-600 rounded-lg shadow-lg p-8 mb-6 text-white">
-          <h2 className="text-2xl font-bold mb-2">Diagnosis Utama</h2>
-          <p className="text-3xl font-bold mb-4">{topResult.diseaseName}</p>
-          <div className="flex items-center gap-4">
-            <div className="bg-white/20 backdrop-blur-sm rounded-lg px-6 py-3">
-              <p className="text-sm opacity-90">Probabilitas</p>
-              <p className="text-4xl font-bold">{(topResult.probability * 100).toFixed(1)}%</p>
-            </div>
-            <div className="flex-1">
-              <div className="bg-white/20 rounded-full h-4 overflow-hidden">
-                <div
-                  className="bg-white h-full rounded-full transition-all duration-500"
-                  style={{ width: `${topResult.probability * 100}%` }}
-                ></div>
+        <div>
+          <div className="bg-linear-to-r from-indigo-500 to-purple-600 rounded-lg shadow-lg p-8 mb-6 text-white">
+            <h2 className="text-2xl font-bold mb-2">Diagnosis Utama</h2>
+            <p className="text-3xl font-bold mb-4">{topResult.diseaseName}</p>
+            <div className="flex items-center gap-4">
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg px-6 py-3">
+                <p className="text-sm opacity-90">Probabilitas</p>
+                <p className="text-4xl font-bold">{(topResult.probability * 100).toFixed(1)}%</p>
+              </div>
+              <div className="flex-1">
+                <div className="bg-white/20 rounded-full h-4 overflow-hidden">
+                  <div
+                    className="bg-white h-full rounded-full transition-all duration-500"
+                    style={{ width: `${topResult.probability * 100}%` }}
+                  ></div>
+                </div>
               </div>
             </div>
           </div>

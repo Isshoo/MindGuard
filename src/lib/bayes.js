@@ -45,7 +45,6 @@ function identifyRelevantDiseases(selectedSymptomIds, rules, diseases) {
 
 /**
  * Hitung probabilitas penyakit menggunakan Teorema Bayes
- * Sesuai dengan metode di jurnal (bukan Naive Bayes)
  */
 function calculateDiseaseProbability(diseaseId, selectedSymptomIds, rules) {
   // Filter rule yang relevan dengan penyakit dan gejala yang dipilih
