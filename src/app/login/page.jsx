@@ -123,8 +123,8 @@ export default function LoginPage() {
         {/* Demo Credentials Info */}
         <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
           <p className="text-sm text-blue-800 font-semibold mb-2">Demo Credentials:</p>
-          <p className="text-sm text-blue-700">Email: admin@admin.com</p>
-          <p className="text-sm text-blue-700">Password: admin123</p>
+          <p className="text-sm text-blue-700">Email: admin@example.com</p>
+          <p className="text-sm text-blue-700">Password: password123</p>
         </div>
       </div>
     </div>

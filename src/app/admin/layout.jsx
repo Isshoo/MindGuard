@@ -16,6 +16,7 @@ export default function AdminLayout({ children }) {
     const checkAuth = async () => {
       try {
         const response = await fetch("/api/auth/me");
+        console.log(response);
         if (!response.ok) {
           router.push("/login");
           return;
@@ -69,7 +70,7 @@ export default function AdminLayout({ children }) {
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } bg-white border-r border-gray-200 w-64`}
       >
-        <div className="h-full px-3 py-4 overflow-y-auto">
+        <div className="h-full flex flex-col px-3 py-4 overflow-y-auto">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold text-indigo-600">Admin Panel</h2>
             <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-2 rounded-lg hover:bg-gray-100">
@@ -103,13 +104,15 @@ export default function AdminLayout({ children }) {
             })}
           </nav>
 
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors w-full mt-6"
-          >
-            <LogOut className="w-5 h-5" />
-            <span className="font-medium">Logout</span>
-          </button>
+          <div className="flex flex-1 items-end justify-start gap-3 px-4 py-3  w-full">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors w-full"
+            >
+              <LogOut className="w-5 h-5" />
+              <span className="font-medium">Logout</span>
+            </button>
+          </div>
         </div>
       </aside>
 
@@ -131,10 +134,7 @@ export default function AdminLayout({ children }) {
 
       {/* Overlay for mobile */}
       {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        ></div>
+        <div className="fixed inset-0 bg-black/50 z-30 lg:hidden" onClick={() => setSidebarOpen(false)}></div>
       )}
     </div>
   );

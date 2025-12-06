@@ -26,6 +26,13 @@ export async function POST(request) {
   try {
     const { diseaseId, symptomId, probability } = await request.json();
 
+    const existingRule = await prisma.rule.findUnique({
+      where: { diseaseId_symptomId: { diseaseId, symptomId } },
+    });
+    if (existingRule) {
+      return NextResponse.json({ error: "Aturan sudah ada" }, { status: 400 });
+    }
+
     const rule = await prisma.rule.create({
       data: {
         diseaseId,

@@ -5,8 +5,10 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const cookieStore = cookies();
+    console.log("get auth me");
+    const cookieStore = await cookies(); // Make it async
     const token = cookieStore.get("auth-token");
+    console.log(token);
 
     if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

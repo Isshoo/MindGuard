@@ -3,10 +3,11 @@ import { prisma } from "@/lib/prisma";
 
 export async function PUT(request, { params }) {
   try {
+    const { id } = await params;
     const { probability } = await request.json();
 
     const rule = await prisma.rule.update({
-      where: { id: params.id },
+      where: { id: id },
       data: { probability: parseFloat(probability) },
       include: {
         disease: true,
@@ -23,8 +24,9 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
+    const { id } = await params;
     await prisma.rule.delete({
-      where: { id: params.id },
+      where: { id: id },
     });
 
     return NextResponse.json({ message: "Aturan berhasil dihapus" });

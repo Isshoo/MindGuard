@@ -18,6 +18,21 @@ export async function POST(request) {
   try {
     const { code, name, description } = await request.json();
 
+    const existingSymptom = await prisma.symptom.findUnique({ where: { code } });
+    if (existingSymptom) {
+      return NextResponse.json({ error: "Kode gejala sudah digunakan" }, { status: 400 });
+    }
+    const existingName = await prisma.symptom.findFirst({ where: { name } });
+    if (existingName) {
+      return NextResponse.json({ error: "Nama gejala sudah digunakan" }, { status: 400 });
+    }
+    if (description) {
+      const existingDescription = await prisma.symptom.findFirst({ where: { description } });
+      if (existingDescription) {
+        return NextResponse.json({ error: "Deskripsi gejala sudah digunakan" }, { status: 400 });
+      }
+    }
+
     const symptom = await prisma.symptom.create({
       data: { code, name, description },
     });

@@ -44,11 +44,15 @@ export default function SymptomsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+      console.log("Response:", response);
 
       if (response.ok) {
         fetchSymptoms();
         closeModal();
         alert(editingSymptom ? "Gejala berhasil diupdate" : "Gejala berhasil ditambahkan");
+      } else {
+        const data = await response.json();
+        alert(data.error || "Terjadi kesalahan");
       }
     } catch (error) {
       console.error("Error saving symptom:", error);
@@ -77,6 +81,9 @@ export default function SymptomsPage() {
       if (response.ok) {
         fetchSymptoms();
         alert("Gejala berhasil dihapus");
+      } else {
+        const data = await response.json();
+        alert(data.error || "Terjadi kesalahan");
       }
     } catch (error) {
       console.error("Error deleting symptom:", error);
@@ -193,7 +200,7 @@ export default function SymptomsPage() {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
             <div className="px-6 py-4 border-b border-gray-200">
               <h3 className="text-xl font-bold text-gray-800">{editingSymptom ? "Edit Gejala" : "Tambah Gejala"}</h3>

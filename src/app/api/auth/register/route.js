@@ -14,6 +14,13 @@ export async function POST(request) {
       return NextResponse.json({ error: "Email sudah terdaftar" }, { status: 400 });
     }
 
+    const existingName = await prisma.user.findFirst({
+      where: { name },
+    });
+    if (existingName) {
+      return NextResponse.json({ error: "Nama sudah digunakan" }, { status: 400 });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
