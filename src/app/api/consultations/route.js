@@ -4,10 +4,14 @@ import { calculateBayesTheorem } from "@/lib/bayes";
 
 export async function POST(request) {
   try {
-    const { patientName, patientAge, patientGender, symptomIds } = await request.json();
+    const { patientName, patientAge, patientGender, symptomIds } =
+      await request.json();
 
     if (!symptomIds || symptomIds.length === 0) {
-      return NextResponse.json({ error: "Pilih minimal 1 gejala" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Pilih minimal 1 gejala" },
+        { status: 400 }
+      );
     }
 
     // Ambil semua rules dan diseases
@@ -25,7 +29,10 @@ export async function POST(request) {
 
     if (results.length === 0) {
       return NextResponse.json(
-        { error: "Tidak ditemukan penyakit yang cocok dengan gejala yang dipilih" },
+        {
+          error:
+            "Tidak ditemukan penyakit yang cocok dengan gejala yang dipilih",
+        },
         { status: 404 }
       );
     }
@@ -33,9 +40,9 @@ export async function POST(request) {
     // Simpan consultation
     const consultation = await prisma.consultation.create({
       data: {
-        patientName,
-        patientAge: parseInt(patientAge),
-        patientGender,
+        patientName: patientName || "",
+        patientAge: patientAge || 0,
+        patientGender: patientGender || "",
         symptoms: {
           create: symptomIds.map((symptomId) => ({
             symptomId,
@@ -71,7 +78,10 @@ export async function POST(request) {
     });
   } catch (error) {
     console.error("Consultation error:", error);
-    return NextResponse.json({ error: "Gagal melakukan konsultasi" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Gagal melakukan konsultasi" },
+      { status: 500 }
+    );
   }
 }
 
@@ -101,6 +111,9 @@ export async function GET() {
     return NextResponse.json(consultations);
   } catch (error) {
     console.error("Get consultations error:", error);
-    return NextResponse.json({ error: "Gagal mengambil data konsultasi" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Gagal mengambil data konsultasi" },
+      { status: 500 }
+    );
   }
 }

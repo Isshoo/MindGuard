@@ -13,7 +13,7 @@ export default function ConsultationPage() {
   const [selectedSymptoms, setSelectedSymptoms] = useState([]);
   const [patientData, setPatientData] = useState({
     patientName: "",
-    patientAge: "",
+    patientAge: 0,
     patientGender: "",
   });
 
@@ -36,7 +36,9 @@ export default function ConsultationPage() {
 
   const toggleSymptom = (symptomId) => {
     setSelectedSymptoms((prev) =>
-      prev.includes(symptomId) ? prev.filter((id) => id !== symptomId) : [...prev, symptomId]
+      prev.includes(symptomId)
+        ? prev.filter((id) => id !== symptomId)
+        : [...prev, symptomId]
     );
   };
 
@@ -96,9 +98,14 @@ export default function ConsultationPage() {
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center gap-2">
               <Brain className="w-8 h-8 text-indigo-600" />
-              <span className="text-xl font-bold text-gray-800">MentalHealth AI</span>
+              <span className="text-xl font-bold text-gray-800">
+                MentalHealth AI
+              </span>
             </Link>
-            <Link href="/" className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition-colors">
+            <Link
+              href="/"
+              className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition-colors"
+            >
               <ArrowLeft className="w-5 h-5" />
               Kembali
             </Link>
@@ -110,9 +117,12 @@ export default function ConsultationPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Konsultasi Diagnosis</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Konsultasi Diagnosis
+          </h1>
           <p className="text-lg text-gray-600">
-            Isi data diri dan pilih gejala yang Anda alami untuk mendapatkan analisis
+            Isi data diri dan pilih gejala yang Anda alami untuk mendapatkan
+            analisis
           </p>
         </div>
 
@@ -121,10 +131,14 @@ export default function ConsultationPage() {
           <div className="flex items-start">
             <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5 mr-3 shrink-0" />
             <div>
-              <p className="text-sm text-yellow-800 font-semibold">Penting untuk Diperhatikan:</p>
+              <p className="text-sm text-yellow-800 font-semibold">
+                Penting untuk Diperhatikan:
+              </p>
               <p className="text-sm text-yellow-700 mt-1">
-                Hasil diagnosis ini hanya sebagai rujukan awal dan tidak menggantikan konsultasi dengan profesional
-                kesehatan mental. Jika Anda mengalami gejala berat, segera hubungi psikolog atau psikiater.
+                Hasil diagnosis ini hanya sebagai rujukan awal dan tidak
+                menggantikan konsultasi dengan profesional kesehatan mental.
+                Jika Anda mengalami gejala berat, segera hubungi psikolog atau
+                psikiater.
               </p>
             </div>
           </div>
@@ -134,16 +148,24 @@ export default function ConsultationPage() {
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Patient Data Section */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Data Pasien</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+              Data Pasien (Optional)
+            </h2>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Nama Lengkap
+                </label>
                 <input
                   type="text"
-                  required
                   value={patientData.patientName}
-                  onChange={(e) => setPatientData({ ...patientData, patientName: e.target.value })}
+                  onChange={(e) =>
+                    setPatientData({
+                      ...patientData,
+                      patientName: e.target.value,
+                    })
+                  }
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="Masukkan nama lengkap"
                 />
@@ -151,25 +173,35 @@ export default function ConsultationPage() {
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Usia *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Usia
+                  </label>
                   <input
                     type="number"
-                    required
-                    min="1"
-                    max="120"
                     value={patientData.patientAge}
-                    onChange={(e) => setPatientData({ ...patientData, patientAge: e.target.value })}
+                    onChange={(e) =>
+                      setPatientData({
+                        ...patientData,
+                        patientAge: e.target.value,
+                      })
+                    }
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     placeholder="Masukkan usia"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Jenis Kelamin
+                  </label>
                   <select
-                    required
                     value={patientData.patientGender}
-                    onChange={(e) => setPatientData({ ...patientData, patientGender: e.target.value })}
+                    onChange={(e) =>
+                      setPatientData({
+                        ...patientData,
+                        patientGender: e.target.value,
+                      })
+                    }
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="">Pilih jenis kelamin</option>
@@ -184,14 +216,18 @@ export default function ConsultationPage() {
           {/* Symptoms Section */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Pilih Gejala yang Dialami</h2>
+              <h2 className="text-2xl font-bold text-gray-800">
+                Pilih Gejala yang Dialami
+              </h2>
               <span className="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
                 {selectedSymptoms.length} dari {symptoms.length} dipilih
               </span>
             </div>
 
             {symptoms.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">Tidak ada data gejala. Hubungi administrator.</div>
+              <div className="text-center py-8 text-gray-500">
+                Tidak ada data gejala. Hubungi administrator.
+              </div>
             ) : (
               <div className="space-y-3">
                 {symptoms.map((symptom) => (
@@ -210,9 +246,13 @@ export default function ConsultationPage() {
                       className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500 mt-0.5"
                     />
                     <div className="ml-3">
-                      <span className="text-sm font-medium text-gray-900 block">{symptom.name}</span>
+                      <span className="text-sm font-medium text-gray-900 block">
+                        {symptom.name}
+                      </span>
                       {symptom.description && (
-                        <span className="text-sm text-gray-600 block mt-1">{symptom.description}</span>
+                        <span className="text-sm text-gray-600 block mt-1">
+                          {symptom.description}
+                        </span>
                       )}
                     </div>
                   </label>

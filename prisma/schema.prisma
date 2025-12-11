@@ -60,9 +60,9 @@ model Rule {
 model Consultation {
   id          String   @id @default(cuid())
   userId      String?
-  patientName String
-  patientAge  Int
-  patientGender String
+  patientName String?
+  patientAge  Int?
+  patientGender String?
   createdAt   DateTime @default(now())
   
   user      User?     @relation(fields: [userId], references: [id])

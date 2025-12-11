@@ -22,11 +22,16 @@ export function calculateBayesTheorem(selectedSymptomIds, rules, diseases) {
   const relevantDiseases = forwardChaining(selectedSymptomIds, rules, diseases);
 
   if (relevantDiseases.length === 0) {
-    console.log("❌ Tidak ada penyakit yang cocok dengan gejala yang dipilih\n");
+    console.log(
+      "❌ Tidak ada penyakit yang cocok dengan gejala yang dipilih\n"
+    );
     return [];
   }
 
-  console.log("✅ Penyakit yang lolos Forward Chaining:", relevantDiseases.length);
+  console.log(
+    "✅ Penyakit yang lolos Forward Chaining:",
+    relevantDiseases.length
+  );
   relevantDiseases.forEach((disease, index) => {
     console.log(`   ${index + 1}. ${disease.name} (${disease.code})`);
   });
@@ -35,10 +40,17 @@ export function calculateBayesTheorem(selectedSymptomIds, rules, diseases) {
   // STEP 2: HITUNG PROBABILITAS BAYES
   console.log("--- STEP 2: PERHITUNGAN TEOREMA BAYES ---\n");
   const results = relevantDiseases.map((disease, index) => {
-    console.log(`[${index + 1}/${relevantDiseases.length}] Menghitung: ${disease.name}`);
+    console.log(
+      `[${index + 1}/${relevantDiseases.length}] Menghitung: ${disease.name}`
+    );
     console.log("─────────────────────────────────────");
 
-    const probability = calculateDiseaseProbability(disease.id, disease.name, selectedSymptomIds, rules);
+    const probability = calculateDiseaseProbability(
+      disease.id,
+      disease.name,
+      selectedSymptomIds,
+      rules
+    );
 
     return {
       diseaseId: disease.id,
@@ -55,7 +67,11 @@ export function calculateBayesTheorem(selectedSymptomIds, rules, diseases) {
 
   console.log("\n📊 HASIL AKHIR (diurutkan):");
   sortedResults.forEach((result, index) => {
-    console.log(`   ${index + 1}. ${result.diseaseName}: ${(result.probability * 100).toFixed(2)}%`);
+    console.log(
+      `   ${index + 1}. ${result.diseaseName}: ${(
+        result.probability * 100
+      ).toFixed(2)}%`
+    );
   });
 
   console.log("\n========================================");
@@ -70,11 +86,9 @@ export function calculateBayesTheorem(selectedSymptomIds, rules, diseases) {
  * FORWARD CHAINING
  * ==========================================
  *
- * Fungsi ini memeriksa apakah gejala yang dipilih user
+ * Memeriksa apakah gejala yang dipilih user
  * memenuhi minimal threshold untuk setiap penyakit.
  *
- * Threshold: Minimal 30% dari total gejala penyakit harus cocok
- * DAN harus ada minimal 2 gejala yang cocok
  */
 function forwardChaining(selectedSymptomIds, rules, diseases) {
   const diseaseMatches = new Map();
@@ -126,13 +140,15 @@ function forwardChaining(selectedSymptomIds, rules, diseases) {
 
     if (isRelevant) {
       console.log(
-        `   ✅ ${disease.name}: ${match.matchCount}/${match.totalSymptoms} gejala cocok (${matchPercentage.toFixed(
-          1
-        )}%)`
+        `   ✅ ${disease.name}: ${match.matchCount}/${
+          match.totalSymptoms
+        } gejala cocok (${matchPercentage.toFixed(1)}%)`
       );
     } else {
       console.log(
-        `   ❌ ${disease.name}: ${match.matchCount}/${match.totalSymptoms} gejala cocok (${matchPercentage.toFixed(
+        `   ❌ ${disease.name}: ${match.matchCount}/${
+          match.totalSymptoms
+        } gejala cocok (${matchPercentage.toFixed(
           1
         )}%) - Tidak memenuhi threshold`
       );
@@ -149,17 +165,24 @@ function forwardChaining(selectedSymptomIds, rules, diseases) {
  * PERHITUNGAN TEOREMA BAYES
  * ==========================================
  *
- * Formula dari jurnal:
+ * Formula:
  * 1. Total bobot = Σ P(Gejala|Penyakit)
  * 2. Normalisasi = P(Gi|Penyakit) / Total bobot
  * 3. Evidence = Σ [P(Gi|Penyakit) × Normalisasi]
  * 4. Posterior = [P(Gi|Penyakit) × Normalisasi] / Evidence
  * 5. Total Bayes = Σ [P(Gi|Penyakit) × Posterior]
  */
-function calculateDiseaseProbability(diseaseId, diseaseName, selectedSymptomIds, rules) {
+function calculateDiseaseProbability(
+  diseaseId,
+  diseaseName,
+  selectedSymptomIds,
+  rules
+) {
   // Ambil rule yang relevan
   const relevantRules = rules.filter(
-    (rule) => rule.diseaseId === diseaseId && selectedSymptomIds.includes(rule.symptomId)
+    (rule) =>
+      rule.diseaseId === diseaseId &&
+      selectedSymptomIds.includes(rule.symptomId)
   );
 
   if (relevantRules.length === 0) {
@@ -173,7 +196,9 @@ function calculateDiseaseProbability(diseaseId, diseaseName, selectedSymptomIds,
   console.log(`   Gejala yang cocok: ${probabilities.length} gejala`);
   probabilities.forEach((prob, index) => {
     const symptomName = relevantRules[index].symptom?.name || "Unknown";
-    console.log(`      - ${symptomName}: ${prob} (${(prob * 100).toFixed(0)}%)`);
+    console.log(
+      `      - ${symptomName}: ${prob} (${(prob * 100).toFixed(0)}%)`
+    );
   });
 
   // LANGKAH 1: Hitung Total Bobot
@@ -190,7 +215,11 @@ function calculateDiseaseProbability(diseaseId, diseaseName, selectedSymptomIds,
   const normalizedProbs = probabilities.map((prob) => prob / totalWeight);
   console.log(`\n   Langkah 2 - Normalisasi (P|H):`);
   normalizedProbs.forEach((norm, index) => {
-    console.log(`      P|H${index + 1} = ${probabilities[index]} / ${totalWeight.toFixed(4)} = ${norm.toFixed(4)}`);
+    console.log(
+      `      P|H${index + 1} = ${probabilities[index]} / ${totalWeight.toFixed(
+        4
+      )} = ${norm.toFixed(4)}`
+    );
   });
 
   // LANGKAH 3: Hitung Evidence P(E|Hk) × P(Hk)
@@ -199,7 +228,9 @@ function calculateDiseaseProbability(diseaseId, diseaseName, selectedSymptomIds,
   for (let i = 0; i < probabilities.length; i++) {
     const contribution = probabilities[i] * normalizedProbs[i];
     evidence += contribution;
-    evidenceDetails.push(`(${probabilities[i]} × ${normalizedProbs[i].toFixed(4)})`);
+    evidenceDetails.push(
+      `(${probabilities[i]} × ${normalizedProbs[i].toFixed(4)})`
+    );
   }
 
   console.log(`\n   Langkah 3 - Evidence:`);
@@ -219,9 +250,9 @@ function calculateDiseaseProbability(diseaseId, diseaseName, selectedSymptomIds,
     const posterior = numerator / evidence;
     posteriors.push(posterior);
     console.log(
-      `      P(H${i + 1}|E) = (${probabilities[i]} × ${normalizedProbs[i].toFixed(4)}) / ${evidence.toFixed(
-        4
-      )} = ${posterior.toFixed(4)}`
+      `      P(H${i + 1}|E) = (${probabilities[i]} × ${normalizedProbs[
+        i
+      ].toFixed(4)}) / ${evidence.toFixed(4)} = ${posterior.toFixed(4)}`
     );
   }
 
@@ -237,7 +268,9 @@ function calculateDiseaseProbability(diseaseId, diseaseName, selectedSymptomIds,
   console.log(`\n   Langkah 5 - Total Bayes (∑Bayes):`);
   console.log(`      ${bayesDetails.join(" + ")}`);
   console.log(`      = ${bayesTotal.toFixed(4)}`);
-  console.log(`\n   🎯 HASIL: ${diseaseName} = ${(bayesTotal * 100).toFixed(2)}%\n`);
+  console.log(
+    `\n   🎯 HASIL: ${diseaseName} = ${(bayesTotal * 100).toFixed(2)}%\n`
+  );
 
   return bayesTotal;
 }
@@ -247,7 +280,11 @@ function calculateDiseaseProbability(diseaseId, diseaseName, selectedSymptomIds,
  */
 function getRelevantSymptoms(diseaseId, selectedSymptomIds, rules) {
   return rules
-    .filter((rule) => rule.diseaseId === diseaseId && selectedSymptomIds.includes(rule.symptomId))
+    .filter(
+      (rule) =>
+        rule.diseaseId === diseaseId &&
+        selectedSymptomIds.includes(rule.symptomId)
+    )
     .map((rule) => ({
       symptomId: rule.symptomId,
       probability: rule.probability,
