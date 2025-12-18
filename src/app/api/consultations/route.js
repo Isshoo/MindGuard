@@ -14,6 +14,18 @@ export async function POST(request) {
       );
     }
 
+    let ageNumber = 0;
+
+    if (patientAge) {
+      ageNumber = Number(patientAge);
+      if (isNaN(ageNumber) || ageNumber < 0) {
+        return NextResponse.json(
+          { error: "Usia pasien tidak valid" },
+          { status: 400 }
+        );
+      }
+    }
+
     // Ambil semua rules dan diseases
     const rules = await prisma.rule.findMany({
       include: {
@@ -41,7 +53,7 @@ export async function POST(request) {
     const consultation = await prisma.consultation.create({
       data: {
         patientName: patientName || "",
-        patientAge: patientAge || 0,
+        patientAge: ageNumber || 0,
         patientGender: patientGender || "",
         symptoms: {
           create: symptomIds.map((symptomId) => ({
